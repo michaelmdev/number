@@ -11,7 +11,6 @@ import static org.junit.Assert.*;
 /**
  * @author michael.malevannyy@gmail.com, 12.08.2019
  */
-
 public class NumberOfferedTest {
 
     private NumberOffered numberOffered = new NumberOffered();

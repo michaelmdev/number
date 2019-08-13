@@ -8,6 +8,8 @@ import static java.lang.Double.NaN;
  * 2) the max number it has encountered so far
  * 3) the average of all numbers it has encountered so far
  *
+ * assume that numbers can repeat
+ *
  * @author michael.malevannyy@gmail.com, 12.08.2019
  */
 public class NumberOffered {
