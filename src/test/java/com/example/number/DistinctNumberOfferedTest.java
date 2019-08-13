@@ -21,9 +21,9 @@ public class DistinctNumberOfferedTest {
 
         double[] nonUnical = {1, 2, 3, 3, 3, 3};
         DistinctNumberOffered nonDistinct = DistinctNumberOffered.of(nonUnical);
-        assertEquals(1, distinct.getMin(), epsilon);
-        assertEquals(2, distinct.getAvg(), epsilon);
-        assertEquals(3, distinct.getMax(), epsilon);
+        assertEquals(1, nonDistinct.getMin(), epsilon);
+        assertEquals(2, nonDistinct.getAvg(), epsilon);
+        assertEquals(3, nonDistinct.getMax(), epsilon);
 
         assertTrue(DistinctNumberOffered.of(nonUnical).getAvg() != NumberOffered.of(nonUnical).getAvg());
     }
