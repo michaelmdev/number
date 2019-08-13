@@ -1,40 +1,46 @@
 package com.example.number;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Collection;
-
 import static java.lang.Double.NaN;
 
 /**
  * At any given time it can tell 3 things:
- * 1) the smallest number it has encountered so far
- * 2) the largest number it has encountered so far
+ * 1) the min number it has encountered so far
+ * 2) the max number it has encountered so far
  * 3) the average of all numbers it has encountered so far
- * <p>
- * Prove that it is working correctly.
- * Make it so that a novice programmer cannot use it the wrong way,
- * nor that an evil programmer can break it.
  *
  * @author michael.malevannyy@gmail.com, 12.08.2019
  */
 public class NumberOffered {
 
-    private double smallest = NaN;
-    private double largest = NaN;
+    private double min = NaN;
+    private double max = NaN;
 
     private double sum = 0;
 
     private double avg = NaN;
 
-    private int counter = 0;
+    private long counter = 0;
 
+    /**
+     * offer a number
+     *
+     * @param x number
+     */
     public void offer(double x) {
         synchronized (this) {
-            if (Double.isNaN(smallest) || x < smallest)
-                smallest = x;
-            if (Double.isNaN(largest) || x > largest)
-                largest = x;
+            if (Math.ulp(sum) > Math.abs(x))
+                throw new PrecisionException();
+
+            if (sum > 0 && Math.ulp(x) > Math.abs(sum))
+                throw new PrecisionException();
+
+            if (counter >= Long.MAX_VALUE)
+                throw new OverflowException();
+
+            if (Double.isNaN(min) || x < min)
+                min = x;
+            if (Double.isNaN(max) || x > max)
+                max = x;
 
             sum += x;
 
@@ -42,18 +48,43 @@ public class NumberOffered {
         }
     }
 
-    public void offerAll(@NotNull Collection<Double> doubles) {
-        doubles.stream().filter(aDouble -> aDouble != null && !aDouble.isNaN()).forEach(this::offer);
+    /**
+     * offer an array of numbers
+     *
+     * @param doubles array of numbers
+     */
+    public void offer(double[] doubles) {
+        for (double x : doubles) {
+            offer(x);
+        }
     }
 
-    public double getSmallest() {
-        return smallest;
+    /**
+     * get an instance from array of numbers
+     */
+    public static NumberOffered of(double[] doubles) {
+        NumberOffered numberOffered = new NumberOffered();
+        numberOffered.offer(doubles);
+        return numberOffered;
     }
 
-    public double getLargest() {
-        return largest;
+    /**
+     * smallest offered number
+     */
+    public double getMin() {
+        return min;
     }
 
+    /**
+     * largest offered number
+     */
+    public double getMax() {
+        return max;
+    }
+
+    /**
+     * average of all numbers
+     */
     public double getAvg() {
         return avg;
     }
